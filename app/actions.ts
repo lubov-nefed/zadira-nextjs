@@ -2,6 +2,8 @@
 import { prisma } from "@/lib/prisma";
 import type { Product } from "@prisma/client";
 import { redirect } from "next/navigation";
+import { LoginFormSchema } from "@/auth/definitions";
+import type { FormState } from "@/auth/definitions";
 
 export async function createProduct(data: FormData) {
   "use server";
@@ -22,8 +24,15 @@ export async function createProduct(data: FormData) {
   redirect(`/`);
 }
 
-export async function login(data: FormData) {
+export async function login(state: FormState, data: FormData) {
   const formData = Object.fromEntries(data.entries());
+  //validate fields
+  const validatedFields = LoginFormSchema.safeParse({
+    name: formData.name,
+    password: formData.password,
+  });
+  console.log(validatedFields);
+
   //findUserByName
   try {
     const record = await prisma.user.findUnique({
@@ -33,12 +42,21 @@ export async function login(data: FormData) {
     if (record) {
       //checkUserPassword
       if (formData.password === record.password) {
-        console.log("Password is correct");
+        return {
+          field: "password",
+          message: "Password is correct",
+        };
       } else {
-        console.log("Password is incorrect");
+        return {
+          field: "password",
+          message: "Password is incorrect",
+        };
       }
     } else {
-      console.log("Wrong username");
+      return {
+        field: "name",
+        message: "Wrong username",
+      };
     }
   } catch (error) {
     console.log(error);

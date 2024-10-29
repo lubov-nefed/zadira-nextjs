@@ -1,10 +1,10 @@
 "use client";
+import { useActionState } from "react";
 
-import { useFormState } from "react-dom";
 import { login } from "../app/actions";
 
 export function LoginForm() {
-  const [state, action] = useFormState(login, undefined);
+  const [state, action] = useActionState(login, undefined);
   console.log(state);
 
   return (
@@ -18,6 +18,7 @@ export function LoginForm() {
         <label htmlFor="password">password</label>
         <input type="password" name="password" required />
       </div>
+      {state && <p>{state.message}</p>}
       <button type="submit">Login</button>
     </form>
   );

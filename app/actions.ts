@@ -2,11 +2,9 @@
 import { prisma } from "@/lib/prisma";
 import type { Product } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { LoginFormSchema } from "@/auth/definitions";
-import type { FormState } from "@/auth/definitions";
+import type { LoginFormState } from "@/auth/definitions";
 
 export async function createProduct(data: FormData) {
-  "use server";
   const { name, brand, img, oldPrice, currentPrice, availability } =
     Object.fromEntries(data) as Omit<Product, "id" | "likes">;
   const likes = 0;
@@ -24,41 +22,34 @@ export async function createProduct(data: FormData) {
   redirect(`/`);
 }
 
-export async function login(state: FormState, data: FormData) {
+export async function login(
+  state: LoginFormState,
+  data: FormData
+): Promise<LoginFormState> {
   const formData = Object.fromEntries(data.entries());
-  //validate fields
-  const validatedFields = LoginFormSchema.safeParse({
-    name: formData.name,
-    password: formData.password,
-  });
-  console.log(validatedFields);
+  const errorMessage = "Invalid login credentials.";
 
+  //working with db
   //findUserByName
   try {
     const record = await prisma.user.findUnique({
       where: { name: formData.name },
     });
-    //checkIfUserNameExists
-    if (record) {
-      //checkUserPassword
-      if (formData.password === record.password) {
-        return {
-          field: "password",
-          message: "Password is correct",
-        };
-      } else {
-        return {
-          field: "password",
-          message: "Password is incorrect",
-        };
-      }
-    } else {
+    //ifUserNotFound
+    if (!record) {
       return {
-        field: "name",
-        message: "Wrong username",
+        message: errorMessage,
+      }; //ifUserFoundCheckPassword
+    }
+    if (record && formData.password !== record.password) {
+      return {
+        message: errorMessage,
       };
     }
   } catch (error) {
     console.log(error);
+    return {
+      message: "Oops! Server Error. Try again later.",
+    };
   }
 }

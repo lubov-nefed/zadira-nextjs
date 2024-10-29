@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LoginFormSchema = z.object({
+export const SignupFormSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Name must be at least 3 characters long." })
@@ -16,7 +16,8 @@ export const LoginFormSchema = z.object({
     .trim(),
 });
 
-export type FormState = {
-  field: "name" | "password";
-  message: string;
-};
+export type LoginFormState =
+  | {
+      message: string;
+    }
+  | undefined;

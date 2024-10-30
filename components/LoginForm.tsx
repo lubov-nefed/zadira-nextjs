@@ -5,7 +5,6 @@ import { login } from "../app/actions";
 
 export function LoginForm() {
   const [state, action] = useActionState(login, undefined);
-  console.log(state);
 
   return (
     <form action={action}>

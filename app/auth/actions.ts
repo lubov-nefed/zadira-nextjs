@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { Product, User } from "@prisma/client";
 import { redirect } from "next/navigation";
 import type { LoginFormState } from "@/auth/definitions";
-import { record } from "zod";
+import { createSession } from "./session";
 
 export async function createProduct(data: FormData) {
   const { name, brand, img, oldPrice, currentPrice, availability } =
@@ -64,6 +64,10 @@ export async function login(
 
   const admin = await isAdmin(user);
   if (user && admin) {
+    createSession(user);
     redirect("/admin");
-  } else redirect("/");
+  } else {
+    createSession(user);
+    redirect("/");
+  }
 }

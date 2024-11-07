@@ -21,3 +21,8 @@ export type LoginFormState =
       message: string;
     }
   | undefined;
+
+export type SessionPayload = {
+  userId: string | number;
+  expiresAt: Date;
+};

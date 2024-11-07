@@ -5,7 +5,6 @@ import { LoginForm } from "@/components/LoginForm";
 export default function Login() {
   return (
     <div>
-      <Link href="/admin">Admin</Link>
       <div>
         <h3>Admin credentials:</h3>
         <p>name: admin</p>

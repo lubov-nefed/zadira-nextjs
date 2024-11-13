@@ -64,10 +64,11 @@ export async function login(
 
   const admin = await isAdmin(user);
   if (user && admin) {
-    createSession(user);
+    createSession("admin");
     redirect("/admin");
   } else {
-    createSession(user);
+    createSession("user");
+    console.log("created user session");
     redirect("/");
   }
 }

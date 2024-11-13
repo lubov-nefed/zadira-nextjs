@@ -23,6 +23,7 @@ export type LoginFormState =
   | undefined;
 
 export type SessionPayload = {
-  userId: string | number;
+  sessionId: string | number;
+  userRole: string;
   expiresAt: Date;
 };

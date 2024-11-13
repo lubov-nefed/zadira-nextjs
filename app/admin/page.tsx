@@ -1,4 +1,4 @@
-import { createProduct } from "../auth/actions";
+import { createProduct } from "../../auth/actions";
 
 export default function Admin() {
   return (

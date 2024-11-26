@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookies } from "@/auth/session";
 
 export default async function middleware(request: NextRequest) {
-  const session = await getSessionCookies();
-  if (session?.userRole === "admin") {
+  const response = await fetch(`${request.nextUrl.origin}/api`);
+  const session = await response.json();
+  console.log(session.userName);
+  if (session?.userName === "admin") {
     return NextResponse.next();
   }
   return NextResponse.redirect(new URL("/login", request.url));

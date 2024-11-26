@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { Product, User } from "@prisma/client";
 import { redirect } from "next/navigation";
 import type { LoginFormState } from "@/auth/definitions";
-import { createSession } from "./session";
+import { createDbSession } from "./session";
 
 export async function createProduct(data: FormData) {
   const { name, brand, img, oldPrice, currentPrice, availability } =
@@ -62,12 +62,20 @@ export async function login(
     };
   }
 
+  const dbSession = await prisma.session.findUnique({
+    where: { userName: user.name },
+  });
+  console.log("dbSession", dbSession);
+  if (!dbSession) {
+    await createDbSession(user);
+  }
+
   const admin = await isAdmin(user);
+  console.log("isAdmin", admin);
   if (user && admin) {
-    createSession("admin");
+    console.log("user is Admin");
     redirect("/admin");
   } else {
-    createSession("user");
     console.log("created user session");
     redirect("/");
   }

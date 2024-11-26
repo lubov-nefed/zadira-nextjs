@@ -8,18 +8,27 @@ datasource db {
 }
 
 model Product {
-  id String @id @default(cuid())
-  name String
-  brand String
-  img String
-  oldPrice String
+  id           String @id @default(cuid())
+  name         String
+  brand        String
+  img          String
+  oldPrice     String
   currentPrice String
-  likes Int
+  likes        Int
   availability String
 }
 
 model User {
-  id String @id @default(cuid())  
-  name String @unique
-  password String @unique
+  id       String   @id @default(cuid()) @unique
+  name     String   @unique
+  password String   @unique
+  session  Session?
+}
+
+model Session {
+  id        String @id @default(cuid())
+  expiresAt String
+
+  userName String @unique
+  user     User   @relation(fields: [userName], references: [name])
 }

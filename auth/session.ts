@@ -1,4 +1,6 @@
 import "server-only";
+import { prisma } from "@/lib/prisma";
+import type { User } from "@prisma/client";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import type { SessionPayload } from "@/auth/definitions";
@@ -9,9 +11,7 @@ const key = new TextEncoder().encode(secretKey);
 export async function getSessionCookies() {
   const cookieStore = await cookies();
   const encryptedSession = cookieStore.get("session")?.value;
-  console.log("getting session");
   if (!encryptedSession) {
-    console.log("no cookies");
     return null;
   }
   console.log("encrypted", encryptedSession);
@@ -37,6 +37,19 @@ export async function decrypt(session: string | undefined = "") {
     console.log("cookie decription error");
     return null;
   }
+}
+
+export async function createDbSession(user: User) {
+  const oneHour = 3600 * 1000;
+  const expiresAt = new Date(Date.now() + oneHour).toString();
+  const userName = user.name;
+
+  await prisma.session.create({
+    data: {
+      expiresAt,
+      userName,
+    },
+  });
 }
 
 export async function createSession(userRole: string) {

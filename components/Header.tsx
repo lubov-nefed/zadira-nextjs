@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getSessionCookies } from "@/auth/session";
+import DeleteSessionButton from "@/components/DeleteSessionButton";
 
 export async function Header() {
   /* const isLoggedIn = await getSessionCookies();
@@ -14,6 +14,8 @@ export async function Header() {
       <Link href="/login">Login</Link>
       <br />
       <Link href="/admin">Admin</Link>
+      <br />
+      <DeleteSessionButton />
     </header>
   );
 }

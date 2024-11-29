@@ -1,6 +1,4 @@
 import "server-only";
-import { prisma } from "@/lib/prisma";
-import type { User } from "@prisma/client";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import type { SessionPayload } from "@/auth/definitions";
@@ -34,22 +32,9 @@ export async function decrypt(session: string | undefined = "") {
     });
     return payload;
   } catch (error) {
-    console.log("cookie decription error");
+    console.log("cookie decription error ", error);
     return null;
   }
-}
-
-export async function createDbSession(user: User) {
-  const oneHour = 3600 * 1000;
-  const expiresAt = new Date(Date.now() + oneHour).toString();
-  const userName = user.name;
-
-  await prisma.session.create({
-    data: {
-      expiresAt,
-      userName,
-    },
-  });
 }
 
 export async function createSession(userRole: string) {

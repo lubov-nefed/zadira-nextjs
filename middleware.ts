@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(request: NextRequest) {
-  const response = await fetch(`${request.nextUrl.origin}/api`);
+  const response = await fetch(
+    `${request.nextUrl.origin}/api/get-admin-session`
+  );
   const session = await response.json();
   console.log("current session by ", session.userName);
   if (session?.userName === "admin") {

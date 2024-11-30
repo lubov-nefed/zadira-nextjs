@@ -90,3 +90,11 @@ export async function login(
     redirect("/");
   }
 }
+
+export default async function deleteDbSession(userName: string) {
+  console.log("deleteDbSession");
+  const deletedsession = await prisma.session.delete({
+    where: { userName: userName },
+  });
+  console.log("deletedsession ", deletedsession);
+}

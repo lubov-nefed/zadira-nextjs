@@ -7,7 +7,7 @@ export default function DeleteSessionButton() {
       onClick={async () => {
         console.log("delete session");
 
-        const result = await deleteDbSession("admin");
+        const result = await deleteDbSession();
       }}
     >
       Delete Session

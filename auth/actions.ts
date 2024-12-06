@@ -4,7 +4,7 @@ import type { Product, User } from "@prisma/client";
 import { redirect } from "next/navigation";
 import type { LoginFormState } from "@/auth/definitions";
 import { createDbSession } from "./db-session";
-import { createSession } from "./cookie-session";
+import { setSessionCookies, getSessionCookies } from "./cookie-session";
 
 export async function createProduct(data: FormData) {
   const { name, brand, img, oldPrice, currentPrice, availability } =
@@ -30,7 +30,7 @@ async function isAdmin(user: User) {
   return user.id === admin.id;
 }
 
-async function getUser(formData: {
+async function getDbUserByFormData(formData: {
   [k: string]: FormDataEntryValue;
 }): Promise<User | undefined> {
   try {
@@ -55,7 +55,7 @@ export async function login(
 ): Promise<LoginFormState> {
   const formData = Object.fromEntries(data.entries());
   //Find user in DataBase by credentials
-  const user = await getUser(formData);
+  const user = await getDbUserByFormData(formData);
 
   //Handle Server Error
   if (user === undefined) {
@@ -72,29 +72,28 @@ export async function login(
 
   //Check if session for the user already exists
   const dbSession = await getDbSessionByUserName(user.name);
-  console.log("dbSession", dbSession);
   //Creating session
   if (!dbSession) {
     await createDbSession(user);
-    createSession(user.name);
+    setSessionCookies(user.name);
   }
 
   //Decide where to redirect depending on user role (name)
   const admin = await isAdmin(user);
-  console.log("isAdmin", admin);
   if (user && admin) {
-    console.log("user is Admin");
     redirect("/admin");
   } else {
-    console.log("created user session");
     redirect("/");
   }
 }
 
-export default async function deleteDbSession(userName: string) {
-  console.log("deleteDbSession");
+export default async function deleteDbSession() {
+  console.log("deleteDbSession"); /* 
+  const session = await getSessionCookies();
+  const userRole = session?.userRole; */
+  const userRole = "user";
   const deletedsession = await prisma.session.delete({
-    where: { userName: userName },
+    where: { userName: userRole },
   });
   console.log("deletedsession ", deletedsession);
 }

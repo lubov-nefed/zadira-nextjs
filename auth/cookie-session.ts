@@ -12,7 +12,6 @@ export async function getSessionCookies() {
   if (!encryptedSession) {
     return null;
   }
-  console.log("encrypted", encryptedSession);
   const decryptedSession = await decrypt(encryptedSession);
   return decryptedSession;
 }
@@ -37,7 +36,7 @@ export async function decrypt(session: string | undefined = "") {
   }
 }
 
-export async function createSession(userRole: string) {
+export async function setSessionCookies(userRole: string) {
   const oneHour = 3600 * 1000;
   const expiresAt = new Date(Date.now() + oneHour);
   const sessionId = crypto.randomUUID();

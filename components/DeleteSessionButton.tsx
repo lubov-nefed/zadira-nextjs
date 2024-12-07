@@ -1,5 +1,5 @@
 "use client";
-import deleteDbSession from "@/auth/actions";
+import { deleteDbSession } from "@/auth/actions";
 
 export default function DeleteSessionButton() {
   return (

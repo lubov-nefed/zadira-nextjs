@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import type { LoginFormState } from "@/auth/definitions";
 import { createDbSession } from "./db-session";
 import { setSessionCookies, getSessionCookies } from "./cookie-session";
+import type { Session } from "@prisma/client";
 
 export async function createProduct(data: FormData) {
   const { name, brand, img, oldPrice, currentPrice, availability } =
@@ -87,7 +88,7 @@ export async function login(
   }
 }
 
-export default async function deleteDbSession() {
+export async function deleteDbSession() {
   console.log("deleteDbSession"); /* 
   const session = await getSessionCookies();
   const userRole = session?.userRole; */
@@ -96,4 +97,19 @@ export default async function deleteDbSession() {
     where: { userName: userRole },
   });
   console.log("deletedsession ", deletedsession);
+}
+
+export async function checkStaleDbSession(): Promise<boolean> {
+  const sessions = await prisma.session.findMany();
+  console.log("sessions", sessions);
+  sessions.forEach((session: Session) => {
+    console.log("session expiresAt", session.expiresAt);
+    const expiresAt: number = new Date(session.expiresAt).getTime();
+    console.log("expiresAt", expiresAt);
+    const now: number = Date.now();
+    console.log("now", now);
+    const result: number = now - expiresAt;
+    console.log(result < 0);
+    return result < 0;
+  });
 }

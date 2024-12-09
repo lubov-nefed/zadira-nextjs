@@ -1,11 +1,10 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import type { Product, User } from "@prisma/client";
+import type { Product, User, Session } from "@prisma/client";
 import { redirect } from "next/navigation";
 import type { LoginFormState } from "@/auth/definitions";
 import { createDbSession } from "./db-session";
 import { setSessionCookies, getSessionCookies } from "./cookie-session";
-import type { Session } from "@prisma/client";
 
 export async function createProduct(data: FormData) {
   const { name, brand, img, oldPrice, currentPrice, availability } =
@@ -71,13 +70,8 @@ export async function login(
     };
   }
 
-  //Check if session for the user already exists
-  const dbSession = await getDbSessionByUserName(user.name);
   //Creating session
-  if (!dbSession) {
-    await createDbSession(user);
-    setSessionCookies(user.name);
-  }
+  setSessionCookies(user.name);
 
   //Decide where to redirect depending on user role (name)
   const admin = await isAdmin(user);

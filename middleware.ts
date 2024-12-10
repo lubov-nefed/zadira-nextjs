@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSessionCookies } from "./auth/cookie-session";
 
 export default async function middleware(request: NextRequest) {
-  const response = await fetch(
-    `${request.nextUrl.origin}/api/get-admin-session`
-  );
-  const session = await response.json();
-  console.log("current session by ", session.userName);
-  if (session?.userName === "admin") {
+  const cookies = await getSessionCookies();
+  if (cookies?.userRole === "admin") {
     return NextResponse.next();
   }
   return NextResponse.redirect(new URL("/login", request.url));

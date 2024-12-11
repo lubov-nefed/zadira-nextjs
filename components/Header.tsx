@@ -8,12 +8,15 @@ export async function Header() {
   return (
     <header className="flex justify-around p-2">
       <Link href="/" className="underline hover:text-blue-700">
-        Logo
+        Home
       </Link>
       <nav>Navigation</nav>
       {sessionCookies && <LogOut />}
       {!sessionCookies && (
-        <Link href="/login" className="border border-gray-500 rounded p-2 pt-1">
+        <Link
+          href="/login"
+          className="border border-gray-500 rounded px-2 pb-1 hover:bg-blue-400 hover:text-white active:outline active:outline-2 active:outline-blue-900"
+        >
           Login
         </Link>
       )}

@@ -7,12 +7,14 @@ function getAllProducts() {
 export async function Catalogue() {
   const products = await getAllProducts();
   const catalogue = products.map((product: Product) => (
-    <p key={product.id}>{product.name}</p>
+    <p key={product.id} className="m-2 border rounded border-gray-400">
+      {product.name}
+    </p>
   ));
   return (
     <>
       <h2>Catalogue</h2>
-      <div>{catalogue}</div>
+      <div className="flex flex-wrap">{catalogue}</div>
     </>
   );
 }

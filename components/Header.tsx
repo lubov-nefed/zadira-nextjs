@@ -6,13 +6,21 @@ export async function Header() {
   const sessionCookies = await getSessionCookies();
 
   return (
-    <header>
-      <Link href="/">Logo</Link>
+    <header className="flex justify-around p-2">
+      <Link href="/" className="underline hover:text-blue-700">
+        Logo
+      </Link>
       <nav>Navigation</nav>
       {sessionCookies && <LogOut />}
-      {!sessionCookies && <Link href="/login">Login</Link>}
+      {!sessionCookies && (
+        <Link href="/login" className="border border-gray-500 rounded p-2 pt-1">
+          Login
+        </Link>
+      )}
       <br />
-      <Link href="/admin">Admin</Link>
+      <Link href="/admin" className="underline hover:text-blue-700">
+        Admin
+      </Link>
     </header>
   );
 }

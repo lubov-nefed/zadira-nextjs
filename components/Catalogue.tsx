@@ -12,9 +12,9 @@ export async function Catalogue() {
     </p>
   ));
   return (
-    <>
-      <h2>Catalogue</h2>
+    <div className="p-4">
+      <h2 className="font-semibold pl-2">Catalogue</h2>
       <div className="flex flex-wrap">{catalogue}</div>
-    </>
+    </div>
   );
 }

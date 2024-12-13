@@ -1,15 +1,14 @@
-import { prisma } from "@/lib/prisma";
 import { Product } from "@prisma/client";
+import { ProductCard } from "./ProductCard";
+import { Fragment } from "react";
+import { getAllProducts } from "@/lib/utils";
 
-function getAllProducts() {
-  return prisma.product.findMany();
-}
 export async function Catalogue() {
   const products = await getAllProducts();
   const catalogue = products.map((product: Product) => (
-    <p key={product.id} className="m-2 border rounded border-gray-400">
-      {product.name}
-    </p>
+    <Fragment key={product.id}>
+      <ProductCard {...product} />
+    </Fragment>
   ));
   return (
     <div className="p-4">

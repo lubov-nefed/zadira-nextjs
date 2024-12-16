@@ -5,7 +5,6 @@ import { Cart } from "./Cart";
 
 export async function Header() {
   const isLogedIn = await getSessionCookies();
-  console.log(isLogedIn?.userRole);
 
   return (
     <header className="flex justify-around p-2">
@@ -22,7 +21,9 @@ export async function Header() {
           Login
         </Link>
       )}
-      {isLogedIn?.userRole !== "admin" && <Cart user={isLogedIn?.userRole} />}
+      {isLogedIn && isLogedIn?.userRole !== "admin" && (
+        <Cart user={isLogedIn?.userRole} />
+      )}
       <Link href="/admin" className="underline hover:text-blue-700">
         Admin
       </Link>

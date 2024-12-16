@@ -3,6 +3,7 @@ import { getAllProducts, getProductById } from "@/lib/utils";
 import Image from "next/image";
 import { StarRating } from "@/components/StarRating";
 import Link from "next/link";
+import { AddToCart } from "@/components/AddToCart";
 
 const products = await getAllProducts();
 
@@ -37,11 +38,7 @@ export default async function Product({
             {product.currentPrice}
           </span>
         </div>
-        {isProductAvialable && (
-          <button className="border border-gray-500 rounded px-2 pb-1 bg-blue-400 text-white hover:bg-blue-600 active:outline active:outline-2 active:outline-blue-900">
-            Buy
-          </button>
-        )}
+        {isProductAvialable && <AddToCart productId={product.id} />}
 
         <p>{product.availability}</p>
         {!isProductAvialable && (

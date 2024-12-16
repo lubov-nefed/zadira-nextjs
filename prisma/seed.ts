@@ -36,7 +36,7 @@ const initialProducts = [
     img: "https://raw.githubusercontent.com/lubov-nefed/ajax-training/main/images/zadira/product-image-3.jpg",
     oldPrice: "35$",
     currentPrice: "31$",
-    likes: 6,
+    likes: 5,
     availability: "In stock",
   },
   {

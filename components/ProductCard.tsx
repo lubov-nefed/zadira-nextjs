@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Product } from "@prisma/client";
 import Link from "next/link";
+import { StarRating } from "@/components/StarRating";
 
 export function ProductCard(product: Product) {
   return (
@@ -13,7 +14,7 @@ export function ProductCard(product: Product) {
       <p>{product.brand}</p>
       <p className="line-through">{product.oldPrice}</p>
       <p>{product.currentPrice}</p>
-      <p>{product.likes}</p>
+      <StarRating quantity={product.likes} />
       <p>{product.availability}</p>
     </Link>
   );

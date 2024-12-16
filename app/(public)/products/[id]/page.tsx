@@ -1,7 +1,7 @@
 import type { Product } from "@prisma/client";
 import { getAllProducts, getProductById } from "@/lib/utils";
 import Image from "next/image";
-import star from "@/star.svg";
+import { StarRating } from "@/components/StarRating";
 
 const products = await getAllProducts();
 
@@ -17,16 +17,6 @@ export default async function Product({
 }) {
   const id = (await params).id;
   const product: Product = await getProductById(id);
-  const stars = Array.from({ length: product.likes }).map((el, index) => (
-    <Image
-      key={index}
-      alt="star"
-      src={star}
-      width={20}
-      height={20}
-      className="inline"
-    />
-  ));
   const isProductAvialable = product.availability !== "Out of stock";
   return (
     <div className="flex flex-wrap p-4">
@@ -46,7 +36,7 @@ export default async function Product({
         )}
 
         <p>{product.availability}</p>
-        <div>{stars}</div>
+        <StarRating quantity={product.likes} />
       </div>
     </div>
   );

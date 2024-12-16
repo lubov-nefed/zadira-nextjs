@@ -79,11 +79,13 @@ const initialProducts = [
 
 const initialUsers = [
   {
-    name: "admin",
+    name: "Tom",
+    role: "admin",
     password: "!admin&Pass",
   },
   {
-    name: "user",
+    name: "Jerry",
+    role: "user",
     password: "user&123",
   },
 ];

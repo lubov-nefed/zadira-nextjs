@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Product {
-  id           String @id @default(cuid())
+  id           String @id @unique @default(cuid())
   name         String
   brand        String
   img          String
@@ -16,10 +16,20 @@ model Product {
   currentPrice String
   likes        Int
   availability String
+  carts        Cart[]
 }
 
 model User {
-  id       String   @id @default(cuid()) @unique
+  id       String   @id @unique @default(cuid())
   name     String   @unique
+  role     String
   password String   @unique
+  cart     Cart?
+}
+
+model Cart {
+  id       String   @id @unique @default(cuid())
+  user     User @relation(fields: [userID], references: [id])
+  userID   String @unique
+  content  Product[]
 }

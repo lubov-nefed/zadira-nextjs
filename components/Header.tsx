@@ -22,7 +22,7 @@ export async function Header() {
         </Link>
       )}
       {isLogedIn && isLogedIn?.userRole !== "admin" && (
-        <Cart user={isLogedIn?.userRole} />
+        <Cart user={isLogedIn?.userRole as string} />
       )}
       <Link href="/admin" className="underline hover:text-blue-700">
         Admin

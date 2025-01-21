@@ -26,21 +26,33 @@ export async function createProduct(data: FormData) {
 
 async function isAdmin(user: User) {
   const adminCredentials = { name: "admin" };
-  const admin: User = await prisma.user.findUnique({ where: adminCredentials });
-  return user.id === admin.id;
+  const admin: User | null = await prisma.user.findUnique({
+    where: adminCredentials,
+  });
+  if (!admin) {
+    throw Error("User not found");
+  } else return user.id === admin.id;
 }
 
 async function getDbUserByFormData(formData: {
   [k: string]: FormDataEntryValue;
-}): Promise<User | undefined> {
+}): Promise<User | null> {
   try {
-    const record: User = await prisma.user.findUnique({
-      where: { name: formData.name, password: formData.password },
+    const record: User | null = await prisma.user.findUnique({
+      where: {
+        name: formData.name as string,
+        password: formData.password as string,
+      },
     });
-    return record;
+    if (record) {
+      return record;
+    } else {
+      throw Error("User not found");
+    }
   } catch (error) {
     console.log(error);
   }
+  return null;
 }
 
 export async function login(

@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/zadira-nextjs",
-  output: "export",
   images: {
     remotePatterns: [
       {
